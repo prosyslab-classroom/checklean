@@ -41,6 +41,7 @@ private unsafe def testDefaultPrefixesAndQuotation : IO Unit :=
       "example (n : Nat) : n = n := by omega",
       "example : True := by trivial",
       "example : True := by decide",
+      "example : True := by dsimp",
       "example : True := by native_decide",
       "example : True := by aesop_custom",
       "macro \"quoted_tac\" : tactic => `(tactic| simp)",
@@ -48,7 +49,7 @@ private unsafe def testDefaultPrefixesAndQuotation : IO Unit :=
     ]
     let report ← checkProject { root }
     expect report.failures.isEmpty s!"valid forbidden-tactic fixture failed to elaborate: {repr report.failures}"
-    for token in #["simp", "simpa", "grind", "omega", "trivial", "aesop_custom"] do
+    for token in #["simp", "simpa", "grind", "omega", "trivial", "aesop_custom", "dsimp"] do
       expect (report.findings.any fun finding => finding.tactic == token)
         s!"expected tactic '{token}' was not reported"
     expect (report.findings.all fun finding => finding.tactic != "decide" && finding.tactic != "native_decide")

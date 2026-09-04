@@ -89,15 +89,15 @@ decreasing_by
 private def firstLeaf? (stx : Syntax) : Option (String × String.Pos.Raw) :=
   firstLeafAux? [stx]
 
-private def matchingPrefix? (prefixes : Array String) (token : String) : Option String :=
-  prefixes.find? fun candidate => token.startsWith candidate
+private def matchingPattern? (prefixes : Array String) (token : String) : Option String :=
+  prefixes.find? fun candidate => token.startsWith candidate || token.contains candidate
 
 private def collectTactics (isTacticKind : SyntaxNodeKind → Bool) (fileMap : FileMap)
     (ctx : ScanContext) : Syntax → IO Unit
   | stx@(.node _ kind args) => do
       if isTacticKind kind then
         let some (token, rawPos) := firstLeaf? stx | pure ()
-        let some matched := matchingPrefix? ctx.prefixes token | pure ()
+        let some matched := matchingPattern? ctx.prefixes token | pure ()
         let pos := fileMap.toPosition rawPos
         findingsRef.modify fun findings => findings.push {
           file := ctx.file

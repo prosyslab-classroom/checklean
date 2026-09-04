@@ -38,7 +38,7 @@ With no arguments, the forbidden prefixes are `simp`, `aesop`, `grind`, `omega`,
 lake exe check-lean omega native_decide
 ```
 
-Matching is case-sensitive prefix matching in tactic positions. For example, `simp` also rejects `simpa`, `simp_all`, and any user-defined tactic beginning with `simp`. Comments, strings, and ordinary identifiers are ignored. Tactic quotations such as `` `(tactic| simp) `` are checked, but macro expansion results and dependency source files are not.
+Matching is case-sensitive substring matching in tactic positions. For example, `simp` also rejects `simpa`, `simp_all`, `dsimp`, and any user-defined tactic containing `simp`. Comments, strings, and ordinary identifiers are ignored. Tactic quotations such as `` `(tactic| simp) `` are checked, but macro expansion results and dependency source files are not.
 
 The command recursively checks every `.lean` file below the current directory, excluding `.git`, `.lake`, and symbolic links. Diagnostics are written to stderr.
 
