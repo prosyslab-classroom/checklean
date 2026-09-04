@@ -13,7 +13,7 @@ open Lean
 namespace CheckLean
 
 /-- Prefixes used when the command line does not provide an override. -/
-def defaultForbiddenPrefixes : Array String := #["simp", "aesop", "grind", "omega"]
+def defaultForbiddenPrefixes : Array String := #["simp", "aesop", "grind", "omega", "trivial"]
 
 /-- Configuration for a project scan. -/
 structure Config where

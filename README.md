@@ -32,7 +32,7 @@ The `@checklean/` qualifier selects the executable supplied by the dependency ra
 lake exe check-lean
 ```
 
-With no arguments, the forbidden prefixes are `simp`, `aesop`, `grind`, and `omega`. Positional arguments replace those defaults:
+With no arguments, the forbidden prefixes are `simp`, `aesop`, `grind`, `omega`, and `trivial`. Positional arguments replace those defaults:
 
 ```sh
 lake exe check-lean omega native_decide
