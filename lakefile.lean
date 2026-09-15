@@ -4,6 +4,9 @@ open Lake DSL
 
 package checklean
 
+require Cli from git
+  "https://github.com/leanprover/lean4-cli" @ "v4.32.0"
+
 lean_lib CheckLean
 
 @[default_target]

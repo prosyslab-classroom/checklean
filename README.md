@@ -24,6 +24,12 @@ Pass prefixes after the executable name to replace the defaults:
 lake exe @checklean/check-lean omega native_decide
 ```
 
+To scan a project outside the current directory, pass its path with `--directory` (or `-d`):
+
+```sh
+lake exe @checklean/check-lean --directory ../another-project
+```
+
 The `@checklean/` qualifier selects the executable supplied by the dependency rather than a target in your own package.
 
 ## Command-line usage
@@ -38,9 +44,15 @@ With no arguments, the forbidden prefixes are `simp`, `aesop`, `grind`, `omega`,
 lake exe check-lean omega native_decide
 ```
 
+Use `--directory <path>` or `-d <path>` to choose the directory to scan. The option can be combined with prefix overrides:
+
+```sh
+lake exe check-lean --directory ../another-project omega native_decide
+```
+
 Matching is case-sensitive substring matching in tactic positions. For example, `simp` also rejects `simpa`, `simp_all`, `dsimp`, and any user-defined tactic containing `simp`. Comments, strings, and ordinary identifiers are ignored. Tactic quotations such as `` `(tactic| simp) `` are checked, but macro expansion results and dependency source files are not.
 
-The command recursively checks every `.lean` file below the current directory, excluding `.git`, `.lake`, and symbolic links. Diagnostics are written to stderr.
+The command recursively checks every `.lean` file below the selected directory (the current directory by default), excluding `.git`, `.lake`, and symbolic links. Diagnostic paths are relative to that directory and are written to stderr.
 
 | Exit code | Meaning |
 | --- | --- |

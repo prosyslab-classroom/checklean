@@ -73,6 +73,22 @@ private unsafe def testArgumentReplacement : IO Unit :=
     expect (report.findings.size == 1) "override should replace, not extend, the defaults"
     expect (report.findings[0]!.tactic == "exact") "override prefix did not report exact"
 
+private unsafe def testCliArguments : IO Unit := do
+  match checkLeanCmd.process ["--directory", "fixtures/project", "exact", "decide"] with
+  | .error _ => throw <| IO.userError "lean4-cli rejected valid arguments"
+  | .ok (_, parsed) =>
+    let config := configFromParsed parsed
+    expect (config.root == "fixtures/project") "--directory did not set the scan root"
+    expect (config.forbiddenPrefixes == #["exact", "decide"])
+      "positional prefixes were not preserved with --directory"
+  match checkLeanCmd.process ["-d", "fixtures/project"] with
+  | .error _ => throw <| IO.userError "lean4-cli rejected the short directory flag"
+  | .ok (_, parsed) =>
+    let config := configFromParsed parsed
+    expect (config.root == "fixtures/project") "-d did not set the scan root"
+    expect (config.forbiddenPrefixes == defaultForbiddenPrefixes)
+      "the default prefixes should be used when only a directory is supplied"
+
 private unsafe def testExcludedDirectories : IO Unit :=
   IO.FS.withTempDir fun root => do
     IO.FS.createDirAll (root / ".lake")
@@ -105,6 +121,7 @@ public unsafe def main : IO UInt32 := do
   testClean
   testDefaultPrefixesAndQuotation
   testArgumentReplacement
+  testCliArguments
   testExcludedDirectories
   testFrontendFailure
   testMissingRoot

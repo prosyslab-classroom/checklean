@@ -1,6 +1,16 @@
 {"version": "1.2.0",
  "packagesDir": ".lake/packages",
- "packages": [],
+ "packages":
+ [{"url": "https://github.com/leanprover/lean4-cli",
+   "type": "git",
+   "subDir": null,
+   "scope": "",
+   "rev": "88679d088c9720c27ebdf2ba4dafe17341747f94",
+   "name": "Cli",
+   "manifestFile": "lake-manifest.json",
+   "inputRev": "v4.32.0",
+   "inherited": false,
+   "configFile": "lakefile.toml"}],
  "name": "checklean",
  "lakeDir": ".lake",
  "fixedToolchain": false}
